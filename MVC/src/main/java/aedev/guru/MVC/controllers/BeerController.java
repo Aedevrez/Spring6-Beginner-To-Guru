@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import aedev.guru.MVC.model.Beer;
 import aedev.guru.MVC.services.BeerService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/v1/beer")
 public class BeerController {

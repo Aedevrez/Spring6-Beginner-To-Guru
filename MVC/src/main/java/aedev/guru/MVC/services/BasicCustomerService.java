@@ -84,5 +84,18 @@ public class BasicCustomerService implements CustomerService{
     public void removeCustomerById(UUID customerId) {
         customerMap.remove(customerId);
     }
+
+    @Override
+    public void patchCustomerById(UUID customerId, Customer patchedCustomer) {
+        Customer existingCustomer = customerMap.get(customerId);
+
+        if (patchedCustomer.getCustomerName() != null) {
+            existingCustomer.setCustomerName(patchedCustomer.getCustomerName());
+        }
+
+        if (patchedCustomer.getVersion() != null) {
+            existingCustomer.setVersion(patchedCustomer.getVersion());
+        }
+    }
     
 }
