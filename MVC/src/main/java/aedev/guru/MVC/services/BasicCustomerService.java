@@ -1,25 +1,21 @@
 package aedev.guru.MVC.services;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import org.springframework.stereotype.Service;
 
-import aedev.guru.MVC.model.Customer;
+import aedev.guru.MVC.model.CustomerDTO;
 
 @Service
 public class BasicCustomerService implements CustomerService{
 
-    private Map<UUID, Customer> customerMap;
+    private Map<UUID, CustomerDTO> customerMap;
 
     public BasicCustomerService() {
         this.customerMap = new HashMap<>();
 
-        Customer firstCustomer = Customer.builder()
+        CustomerDTO firstCustomer = CustomerDTO.builder()
                                          .id(UUID.randomUUID())
                                          .customerName("Hakan Kaylan")
                                          .version(1)
@@ -27,7 +23,7 @@ public class BasicCustomerService implements CustomerService{
                                          .lastModifiedDate(LocalDateTime.now())
                                          .build();
 
-        Customer secondCustomer = Customer.builder()
+        CustomerDTO secondCustomer = CustomerDTO.builder()
                                           .id(UUID.randomUUID())
                                           .customerName("Metin Çetin")
                                           .version(2)
@@ -35,7 +31,7 @@ public class BasicCustomerService implements CustomerService{
                                           .lastModifiedDate(LocalDateTime.now())
                                           .build();
 
-        Customer thirdCustomer = Customer.builder()
+        CustomerDTO thirdCustomer = CustomerDTO.builder()
                                          .id(UUID.randomUUID())
                                          .customerName("Leyla Zehra")
                                          .version(4)
@@ -49,21 +45,21 @@ public class BasicCustomerService implements CustomerService{
     }
 
     @Override
-    public List<Customer> listCustomers() {
+    public List<CustomerDTO> listCustomers() {
         return new ArrayList<>(customerMap.values());
     }
 
     @Override
-    public Customer getCustomerById(UUID id) {
-        return customerMap.get(id);
+    public Optional<CustomerDTO> getCustomerById(UUID id) {
+        return Optional.of(customerMap.get(id));
     }
 
     @Override
-    public Customer saveNewCustomer(Customer customer) {
-        Customer newCustomer = Customer.builder()
+    public CustomerDTO saveNewCustomer(CustomerDTO CustomerDTO) {
+        CustomerDTO newCustomer = CustomerDTO.builder()
                                          .id(UUID.randomUUID())
-                                         .customerName(customer.getCustomerName())
-                                         .version(customer.getVersion())
+                                         .customerName(CustomerDTO.getCustomerName())
+                                         .version(CustomerDTO.getVersion())
                                          .createdDate(LocalDateTime.now())
                                          .lastModifiedDate(LocalDateTime.now())
                                          .build();
@@ -74,8 +70,8 @@ public class BasicCustomerService implements CustomerService{
     }
 
     @Override
-    public void updateCustomerById(UUID customerId, Customer updatedCustomer) {
-        Customer previousCustomer = customerMap.get(customerId);
+    public void updateCustomerById(UUID customerId, CustomerDTO updatedCustomer) {
+        CustomerDTO previousCustomer = customerMap.get(customerId);
 
         previousCustomer.setCustomerName(updatedCustomer.getCustomerName());
     }
@@ -86,8 +82,8 @@ public class BasicCustomerService implements CustomerService{
     }
 
     @Override
-    public void patchCustomerById(UUID customerId, Customer patchedCustomer) {
-        Customer existingCustomer = customerMap.get(customerId);
+    public void patchCustomerById(UUID customerId, CustomerDTO patchedCustomer) {
+        CustomerDTO existingCustomer = customerMap.get(customerId);
 
         if (patchedCustomer.getCustomerName() != null) {
             existingCustomer.setCustomerName(patchedCustomer.getCustomerName());

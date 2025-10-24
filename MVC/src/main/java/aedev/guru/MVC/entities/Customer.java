@@ -1,13 +1,8 @@
-package aedev.guru.MVC.model;
+package aedev.guru.MVC.entities;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import lombok.Builder;
-import lombok.Data;
-
-@Data
-@Builder
 public class Customer {
     private UUID id;
     private String customerName;

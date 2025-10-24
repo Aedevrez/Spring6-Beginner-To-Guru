@@ -1,14 +1,11 @@
-package aedev.guru.MVC.model;
+package aedev.guru.MVC.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import lombok.Builder;
-import lombok.Data;
+import aedev.guru.MVC.model.BeerStyle;
 
-@Data
-@Builder
 public class Beer {
     private UUID id;
     private Integer version;

@@ -1,20 +1,21 @@
 package aedev.guru.MVC.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-import aedev.guru.MVC.model.Beer;
+import aedev.guru.MVC.model.BeerDTO;
 
 public interface BeerService {
-    Beer getBeerById(UUID id);
+    Optional<BeerDTO> getBeerById(UUID id);
 
-    List<Beer> listBeers();
+    List<BeerDTO> listBeers();
 
-    Beer saveNewBeer(Beer beer);
+    BeerDTO saveNewBeer(BeerDTO BeerDTO);
 
-    void updateBeerById(UUID beerId, Beer updatedBeer);
+    void updateBeerById(UUID beerId, BeerDTO updatedBeer);
 
     void deleteBeerById(UUID beerId);
 
-    void patchBeerById(UUID beerId, Beer patchedBeer);
+    void patchBeerById(UUID beerId, BeerDTO patchedBeer);
 }
