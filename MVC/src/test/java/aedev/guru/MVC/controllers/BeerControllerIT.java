@@ -1,6 +1,7 @@
 package aedev.guru.MVC.controllers;
 
 import aedev.guru.MVC.entities.Beer;
+import aedev.guru.MVC.mappers.BeerMapper;
 import aedev.guru.MVC.model.BeerDTO;
 import aedev.guru.MVC.repositories.BeerRepository;
 import jakarta.transaction.Transactional;
@@ -24,6 +25,9 @@ class BeerControllerIT {
 
     @Autowired
     BeerRepository beerRepository;
+    
+    @Autowired
+    BeerMapper beerMapper;
 
     @Test
     void testListBeers() {
@@ -76,5 +80,42 @@ class BeerControllerIT {
 
         Beer beer = beerRepository.findById(savedUUID).get();
         assertThat(beer).isNotNull();
+    }
+
+    @Test
+    void updateExistingBeer() {
+        Beer beer = beerRepository.findAll().getFirst();
+        BeerDTO beerDTO = beerMapper.beerToBeerDto(beer);
+        beerDTO.setId(null);
+        beerDTO.setVersion(null);
+        final String beerName = "UPDATED";
+        beerDTO.setBeerName(beerName);
+
+        ResponseEntity responseEntity = beerController.updateBeerById(beer.getId(), beerDTO);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
+
+        Beer updatedBeer = beerRepository.findById(beer.getId()).get();
+        assertThat(updatedBeer.getBeerName()).isEqualTo(beerName);
+    }
+
+    @Rollback
+    @Transactional
+    @Test
+    void testUpdateNotFound() {
+        assertThrows(NotFoundException.class, () -> {
+            beerController.updateBeerById(UUID.randomUUID(), BeerDTO.builder().build());
+        });
+    }
+
+    @Test
+    void testDeleteById() {
+        Beer beer = beerRepository.findAll().getFirst();
+
+        ResponseEntity responseEntity = beerController.deleteBeerById(beer.getId());
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
+
+        assertThat(beerRepository.findById(beer.getId()).isEmpty());
+        //Beer foundBeer = beerRepository.findById(beer.getId()).get();
+        //assertThat(foundBeer).isNull();
     }
 }

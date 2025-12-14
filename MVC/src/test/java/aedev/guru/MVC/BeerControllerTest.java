@@ -111,12 +111,14 @@ public class BeerControllerTest {
 
     @Test
     void testUpdateBeer() throws Exception {
-        BeerDTO BeerDTO = basicBeerService.listBeers().getFirst();
+        BeerDTO beerDTO = basicBeerService.listBeers().getFirst();
 
-        mockMvc.perform(put(BeerController.BEER_PATH_ID, BeerDTO.getId())
+        given(beerService.updateBeerById(any(), any())).willReturn(Optional.of(beerDTO));
+
+        mockMvc.perform(put(BeerController.BEER_PATH_ID, beerDTO.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(BeerDTO)))
+                .content(objectMapper.writeValueAsString(beerDTO)))
                 .andExpect(status().isNoContent());
 
         verify(beerService).updateBeerById(any(UUID.class), any(BeerDTO.class));
